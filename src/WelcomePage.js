@@ -1,9 +1,9 @@
 import React from "react";
 
-const WelcomeMessage = ({ email, onClickLogout, getUserLogged }) => {
+const WelcomePage = ({ email, onClickLogout, getUserLogged }) => {
   const user = getUserLogged();
   console.log(user.lastAccess);
-  if (user && user.counter > 1) {
+  if (user && user.counter > 1)
     return (
       <div className="container mt-4">
         <div className="row">
@@ -28,28 +28,26 @@ const WelcomeMessage = ({ email, onClickLogout, getUserLogged }) => {
         </div>
       </div>
     );
-  } else {
-    return (
-      <div className="container mt-4">
-        <div className="row">
-          <div className="col-md-12 text-right">
-            <button
-              id="button-logout"
-              className="btn btn-primary"
-              onClick={onClickLogout}
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-        <div className="row mt-5">
-          <div className="col-md-12 text-center">
-            <h1 className="mt-5">Benvenut* {email}</h1>
-          </div>
+  return (
+    <div className="container mt-4">
+      <div className="row">
+        <div className="col-md-12 text-right">
+          <button
+            id="button-logout"
+            className="btn btn-primary"
+            onClick={onClickLogout}
+          >
+            Logout
+          </button>
         </div>
       </div>
-    );
-  }
+      <div className="row mt-5">
+        <div className="col-md-12 text-center">
+          <h1 className="mt-5">Benvenut* {email}</h1>
+        </div>
+      </div>
+    </div>
+  );
 };
 
-export default WelcomeMessage;
+export default WelcomePage;

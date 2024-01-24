@@ -15,7 +15,7 @@ const LoginForm = ({ onClickLogin, validateEmail }) => {
           <input
             id="input-login"
             className="form-control"
-            placeholder="Email"
+            placeholder="Insert Email"
             value={inputValue}
             onChange={handleInputChange}
           />

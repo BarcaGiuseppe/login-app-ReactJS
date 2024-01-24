@@ -1,7 +1,7 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import LoginForm from "./LoginForm";
-import WelcomeMessage from "./WelcomeMessage";
+import WelcomePage from "./WelcomePage";
 
 const App = () => {
   const validateEmail = (email) => {
@@ -89,7 +89,7 @@ const App = () => {
   return (
     <div>
       {email ? (
-        <WelcomeMessage
+        <WelcomePage
           email={email}
           onClickLogout={onClickLogout}
           users={users}
