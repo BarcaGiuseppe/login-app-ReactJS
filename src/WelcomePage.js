@@ -1,7 +1,8 @@
 import React from "react";
+import { utilityGetUserLogged } from "./utility";
 
-const WelcomePage = ({ email, onClickLogout, getUserLogged }) => {
-  const user = getUserLogged();
+const WelcomePage = ({ email, onClickLogout }) => {
+  const user = utilityGetUserLogged();
   console.log(user.lastAccess);
   if (user && user.counter > 1)
     return (

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { utilityValidateEmail } from "./utility";
 
-const LoginForm = ({ onClickLogin, validateEmail }) => {
+const LoginForm = ({ onClickLogin }) => {
   const [inputValue, setInputValue] = useState("");
-  const isEmailValid = validateEmail(inputValue);
+  const isEmailValid = utilityValidateEmail(inputValue);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);

@@ -1,48 +1,50 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import LoginForm from "./LoginForm";
 import WelcomePage from "./WelcomePage";
+import {
+  utilityGetEmailLogged,
+  utilityGetUserLogged,
+  utilityGetUsers,
+} from "./utility";
 
 const App = () => {
-  const validateEmail = (email) => {
-    return email.match(
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-  };
-  const getEmailLogged = () => {
-    const email = localStorage.getItem("email");
-    return email;
-  };
-  const [email, setEmail] = useState(getEmailLogged());
+  const [email, setEmail] = useState(utilityGetEmailLogged());
   /*const [users, setUsers] = useState(() => {
     const storedUsers = localStorage.getItem("users");
     return storedUsers ? JSON.parse(storedUsers) : [];
   });*/
-  let users = localStorage.getItem("users")
-    ? JSON.parse(localStorage.getItem("users"))
-    : [];
+  useEffect(() => {
+    //setEmail(email+email.length);
+    console.log("DidMount");
+    console.log(utilityGetEmailLogged());
+  }, [email]);
+
+  //const emailLength = useMemo(() => email.length, [email]);
+
   const saveEmailLogged = (email) => {
     setEmail(email);
     localStorage.setItem("email", email);
   };
-
   const deleteEmailLogged = () => {
     console.log("Email rimossa correttamente");
     setEmail("");
     localStorage.removeItem("email");
   };
-
-  const onClickLogin = (email) => {
-    saveEmailLogged(email);
-    saveUserToStorage();
-  };
+  const onClickLogin = useCallback(
+    (email) => {
+      saveEmailLogged(email);
+      saveUserToStorage();
+    },
+    [email]
+  );
 
   const onClickLogout = () => {
     deleteEmailLogged();
   };
 
   const saveUserToStorage = () => {
-    const user = getUserLogged();
+    const user = utilityGetUserLogged();
     if (!!user) {
       updateUser(user);
     } else {
@@ -51,6 +53,7 @@ const App = () => {
   };
 
   const updateUser = (user) => {
+    const users = utilityGetUsers();
     const newUsers = users.map((u) =>
       u.email === user.email
         ? {
@@ -61,44 +64,42 @@ const App = () => {
           }
         : u
     );
-    users = newUsers;
+    //users = newUsers;
     //setUsers(newUsers);
     localStorage.setItem("users", JSON.stringify(newUsers));
   };
 
   const saveNewUser = () => {
+    const users = utilityGetUsers();
+    const email = utilityGetEmailLogged();
+    console.log(email);
     const newUsers = [
       ...users,
       {
-        email: getEmailLogged(),
+        email: email,
         onAccess: new Date().toLocaleString(),
         lastAccess: "",
         counter: 1,
       },
     ];
-    users = newUsers;
+    //users = newUsers;
     //setUsers(newUsers);
     localStorage.setItem("users", JSON.stringify(newUsers));
   };
 
-  const getUserLogged = () => {
-    const emailLogged = getEmailLogged();
-    return users.find((user) => user.email === emailLogged);
-  };
-
   return (
     <div>
-      {email ? (
+      {!!email ? (
         <WelcomePage
-          email={email}
+          //email={email}
           onClickLogout={onClickLogout}
-          users={users}
+          //users={users}
           //setUsers={setUsers}
-          getEmailLogged={getEmailLogged}
-          getUserLogged={getUserLogged}
+          //getEmailLogged={utilityGetEmailLogged}
+          //getUserLogged={utilityGetUserLogged}
         />
       ) : (
-        <LoginForm onClickLogin={onClickLogin} validateEmail={validateEmail} />
+        <LoginForm onClickLogin={onClickLogin} />
       )}
     </div>
   );
